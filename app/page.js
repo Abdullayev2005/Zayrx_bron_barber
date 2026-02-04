@@ -4,13 +4,8 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 
 function formatUzPhone(value) {
-  // faqat raqamlarni olamiz
   let digits = String(value || "").replace(/\D/g, "");
-
-  // 998 bo'lsa kesib tashlaymiz (biz o'zimiz qo'shamiz)
   if (digits.startsWith("998")) digits = digits.slice(3);
-
-  // max 9 ta raqam (XX XXX XX XX)
   digits = digits.slice(0, 9);
 
   const p1 = digits.slice(0, 2);
@@ -28,9 +23,7 @@ function formatUzPhone(value) {
 }
 
 function onlyUzDigitsCount(phoneFormatted) {
-  // +998 dan keyin nechta raqam borligini tekshiradi
   const digits = String(phoneFormatted || "").replace(/\D/g, "");
-  // digits = 998 + 0..9 raqam
   if (!digits.startsWith("998")) return 0;
   return digits.length - 3;
 }
@@ -90,6 +83,11 @@ export default function Page() {
         return;
       }
 
+      // ✅ Meta Pixel — Lead event
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead");
+      }
+
       setStatus({ type: "success", msg: "Yuborildi. Tez orada bog‘lanamiz." });
 
       setForm({
@@ -126,13 +124,10 @@ export default function Page() {
             priority
             className="mx-auto"
           />
-          <h1><span className="text-2xl text-blue-200">X</span></h1>
+
           <h1 className="mt-7 text-3xl font-semibold tracking-tight">
-             Youre business
+            <span className="text-blue-400">X</span> Youre business
           </h1>
-          <br></br>
-          <br></br>
-          <br></br>
 
           <p className="mt-4 text-sm leading-relaxed text-white/70">
             Barbershop, beauty salon, manikyur/pedikyur, spa, tattoo, brow/lash,
@@ -177,35 +172,15 @@ export default function Page() {
 
           <div className="mt-4 space-y-3">
             {[
-              {
-                t: "Online bron (24/7)",
-                d: "Klient o‘zi vaqt tanlaydi — sizga tayyor bron keladi.",
-              },
-              {
-                t: "No-show kamayadi",
-                d: "Avtomatik eslatmalar kelmay qolishni pasaytiradi.",
-              },
-              {
-                t: "CRM: mijoz bazasi va tarix",
-                d: "Kim qachon kelgan, qaysi xizmat, qaysi mutaxassis — hammasi saqlanadi.",
-              },
-              {
-                t: "Tartib: jadval va band vaqt",
-                d: "Mutaxassislar jadvali va band vaqtlar avtomatik boshqariladi.",
-              },
-              {
-                t: "Statik sayt ham qilamiz",
-                d: "Branding bilan oddiy, chiroyli statik landing/portfolio sayt ham qo‘shib beramiz.",
-              },
+              { t: "Online bron (24/7)", d: "Klient o‘zi vaqt tanlaydi — sizga tayyor bron keladi." },
+              { t: "No-show kamayadi", d: "Avtomatik eslatmalar kelmay qolishni pasaytiradi." },
+              { t: "CRM: mijoz bazasi va tarix", d: "Kim qachon kelgan, qaysi xizmat, qaysi mutaxassis — hammasi saqlanadi." },
+              { t: "Tartib: jadval va band vaqt", d: "Mutaxassislar jadvali va band vaqtlar avtomatik boshqariladi." },
+              { t: "Statik sayt ham qilamiz", d: "Branding bilan oddiy, chiroyli statik landing/portfolio sayt ham qo‘shib beramiz." },
             ].map((x, i) => (
-              <div
-                key={i}
-                className="rounded-2xl border border-white/10 bg-white/5 p-4"
-              >
+              <div key={i} className="rounded-2xl border border-white/10 bg-white/5 p-4">
                 <div className="text-sm font-semibold">{x.t}</div>
-                <p className="mt-1 text-sm text-white/70 leading-relaxed">
-                  {x.d}
-                </p>
+                <p className="mt-1 text-sm text-white/70 leading-relaxed">{x.d}</p>
               </div>
             ))}
           </div>
@@ -215,9 +190,7 @@ export default function Page() {
       {/* PRICING + TERMS */}
       <section id="pricing" className="relative px-5 py-12 bg-white/5">
         <div className="mx-auto max-w-md">
-          <h2 className="text-xl font-semibold text-center">
-            Narxlar va shartlar
-          </h2>
+          <h2 className="text-xl font-semibold text-center">Narxlar va shartlar</h2>
 
           <div className="mt-6 space-y-4">
             <div className="rounded-2xl border border-blue-500/40 bg-black/60 p-6">
@@ -252,20 +225,9 @@ export default function Page() {
             <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
               <div className="text-sm font-semibold">Ish tartibi</div>
               <ul className="mt-2 space-y-2 text-sm text-white/70">
-                <li>
-                  • Muddat:{" "}
-                  <span className="text-white font-semibold">1 hafta</span>
-                </li>
-                <li>
-                  • Hamkorlik:{" "}
-                  <span className="text-white font-semibold">
-                    shartnoma asosida
-                  </span>
-                </li>
-                <li>
-                  • To‘lov:{" "}
-                  <span className="text-white font-semibold">oldindan</span>
-                </li>
+                <li>• Muddat: <span className="text-white font-semibold">1 hafta</span></li>
+                <li>• Hamkorlik: <span className="text-white font-semibold">shartnoma asosida</span></li>
+                <li>• To‘lov: <span className="text-white font-semibold">oldindan</span></li>
               </ul>
             </div>
 
@@ -282,17 +244,12 @@ export default function Page() {
       {/* CONTACT FORM */}
       <section id="contact" className="relative px-5 py-12">
         <div className="mx-auto max-w-md">
-          <h2 className="text-xl font-semibold text-center">
-            Kontakt qoldiring
-          </h2>
+          <h2 className="text-xl font-semibold text-center">Kontakt qoldiring</h2>
           <p className="mt-2 text-center text-sm text-white/70">
             Yuborilganda ma’lumotlar darhol Telegram guruhga tushadi.
           </p>
 
-          <form
-            onSubmit={onSubmit}
-            className="mt-7 space-y-3 rounded-2xl border border-white/10 bg-white/5 p-5"
-          >
+          <form onSubmit={onSubmit} className="mt-7 space-y-3 rounded-2xl border border-white/10 bg-white/5 p-5">
             <Select
               label="Biznes turi"
               name="businessType"
@@ -311,40 +268,10 @@ export default function Page() {
             />
 
             <div className="grid grid-cols-1 gap-3">
-              <Input
-                label="Ism"
-                name="firstName"
-                value={form.firstName}
-                onChange={onChange}
-                placeholder="Masalan: Ozodbek"
-                required
-              />
-              <Input
-                label="Familiya"
-                name="lastName"
-                value={form.lastName}
-                onChange={onChange}
-                placeholder="Masalan: Abdullayev"
-                required
-              />
-              <Input
-                label="Telefon raqam"
-                name="phone"
-                value={form.phone}
-                onChange={onChange}
-                placeholder="+998 90 123 45 67"
-                required
-                inputMode="numeric"
-              />
-
-              <Input
-                label="Biznes nomi"
-                name="businessName"
-                value={form.businessName}
-                onChange={onChange}
-                placeholder="Masalan: Kings Beauty"
-                required
-              />
+              <Input label="Ism" name="firstName" value={form.firstName} onChange={onChange} placeholder="Masalan: Ozodbek" required />
+              <Input label="Familiya" name="lastName" value={form.lastName} onChange={onChange} placeholder="Masalan: Abdullayev" required />
+              <Input label="Telefon raqam" name="phone" value={form.phone} onChange={onChange} placeholder="+998 90 123 45 67" required inputMode="numeric" />
+              <Input label="Biznes nomi" name="businessName" value={form.businessName} onChange={onChange} placeholder="Masalan: Kings Beauty" required />
 
               <Select
                 label="Filiallar soni"
@@ -419,20 +346,10 @@ export default function Page() {
   );
 }
 
-function Input({
-  label,
-  name,
-  value,
-  onChange,
-  placeholder,
-  required,
-  inputMode,
-}) {
+function Input({ label, name, value, onChange, placeholder, required, inputMode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-white/80">
-        {label}
-      </span>
+      <span className="mb-1 block text-xs font-semibold text-white/80">{label}</span>
       <input
         name={name}
         value={value}
@@ -449,9 +366,7 @@ function Input({
 function TextArea({ label, name, value, onChange, placeholder }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-white/80">
-        {label}
-      </span>
+      <span className="mb-1 block text-xs font-semibold text-white/80">{label}</span>
       <textarea
         name={name}
         value={value}
@@ -467,9 +382,7 @@ function TextArea({ label, name, value, onChange, placeholder }) {
 function Select({ label, name, value, onChange, options }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-white/80">
-        {label}
-      </span>
+      <span className="mb-1 block text-xs font-semibold text-white/80">{label}</span>
       <select
         name={name}
         value={value}
