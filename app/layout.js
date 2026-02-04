@@ -19,6 +19,7 @@ export default function RootLayout({ children }) {
             fbq('track', 'PageView');
           `}
         </Script>
+
         <noscript>
           <img
             height="1"
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
           />
         </noscript>
       </head>
+
       <body>{children}</body>
     </html>
   );
